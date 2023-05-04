@@ -92,7 +92,7 @@ if (isset($hotel_vote)) {
 
 <body>
 
-    <form class="mt-3 p-2" action="index.php" method="GET">
+    <form class="mt-3 p-2" action="index2.php" method="GET">
         <!-- PARK SELECT -->
         <label for="want-park">Parcheggio</label>
         <select class="p-1" name="want-park" id="want-park">
