@@ -54,7 +54,38 @@ var_dump($hotels);
 </head>
 
 <body>
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Nome</th>
+                <th scope="col">Voto</th>
+                <th scope="col">Descrizione</th>
+                <th scope="col">Parcheggio</th>
+                <th scope="col">Distanza dal centro</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($hotels as $index => $hotel) { ?>
+                <tr>
+                    <th scope="row"><?php echo $index + 1; ?></th>
+                    <td><?php echo $hotel['name']; ?></td>
+                    <td><?php echo $hotel['vote']; ?></td>
+                    <td><?php echo $hotel['description']; ?></td>
 
+                    <!-- parking -->
+                    <td><?php if ($hotel['parking']) {
+                            echo "Si";
+                        } else {
+                            echo "No";
+                        }; ?></td>
+                    <!-- /parking -->
+
+                    <td><?php echo $hotel['distance_to_center']; ?> Km</td>
+                </tr>
+            <?php }; ?>
+        </tbody>
+    </table>
 </body>
 
 </html>
