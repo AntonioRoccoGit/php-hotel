@@ -44,12 +44,13 @@ $hotels = [
 // GET REQUEST
 if (isset($_GET['want-park'])) {
     $want_park = $_GET['want-park'];
-    echo $want_park;
+    $hotel_vote = $_GET['hotel-vote'];
+    echo $hotel_vote;
 };
 
 
 
-var_dump($hotels);
+// var_dump($hotels);
 ?>
 
 <!DOCTYPE html>
@@ -64,11 +65,19 @@ var_dump($hotels);
 </head>
 
 <body>
-    <form action="index.php" method="GET">
+
+    <form class="mt-3 p-2" action="index.php" method="GET">
         <label for="want-park">Parcheggio</label>
         <select class="p-1" name="want-park" id="want-park">
             <option value="">Scegli..</option>
             <option value="true">Si</option>
+        </select>
+        <label for="hotel-vote">Media Voti</label>
+        <select class="p-1" name="hotel-vote" id="hotel-vote">
+            <option value="">Scegli..</option>
+            <?php for ($i = 1; $i <= 5; $i++) { ?>
+                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+            <?php } ?>
         </select>
         <button class="btn btn-success" type="submit">Filtra</button>
         <button class="btn btn-danger" type="reset">Elimina</button>
@@ -92,7 +101,7 @@ var_dump($hotels);
         <tbody>
             <!-- DEFAULT TABLE -->
             <?php
-            if (!isset($_GET['want-park']) || $want_park === "") {
+            if (!isset($_GET['want-park']) || $want_park === "" && $hotel['vote'] >= $hotel_vote) {
                 foreach ($hotels as $index => $hotel) { ?>
                     <tr>
                         <th scope="row"><?php echo $index + 1; ?></th>
@@ -117,7 +126,7 @@ var_dump($hotels);
                 <!-- PARKING FILTRED TABLE -->
                 <?php
                 foreach ($hotels as $index => $hotel) {
-                    if ($hotel['parking']) { ?>
+                    if ($hotel['parking'] && $hotel['vote'] >= $hotel_vote) { ?>
                         <tr>
                             <th scope="row"><?php echo $index + 1; ?></th>
                             <td><?php echo $hotel['name']; ?></td>
