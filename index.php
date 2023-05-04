@@ -1,4 +1,6 @@
 <?php
+// DATA
+
 $hotels = [
 
     [
@@ -39,6 +41,14 @@ $hotels = [
 
 ];
 
+// GET REQUEST
+if (isset($_GET['want-park'])) {
+    $want_park = $_GET['want-park'];
+    echo $want_park;
+};
+
+
+
 var_dump($hotels);
 ?>
 
@@ -54,6 +64,18 @@ var_dump($hotels);
 </head>
 
 <body>
+    <form action="index.php" method="GET">
+        <label for="want-park">Parcheggio</label>
+        <select class="p-1" name="want-park" id="want-park">
+            <option value="">Scegli..</option>
+            <option value="true">Si</option>
+        </select>
+        <button class="btn btn-success" type="submit">Filtra</button>
+        <button class="btn btn-danger" type="reset">Elimina</button>
+
+    </form>
+
+    <!-- DATA TABLE -->
     <table class="table table-striped table-dark">
         <thead>
             <tr>
@@ -65,27 +87,63 @@ var_dump($hotels);
                 <th scope="col">Distanza dal centro</th>
             </tr>
         </thead>
+
+        <!-- body -->
         <tbody>
-            <?php foreach ($hotels as $index => $hotel) { ?>
-                <tr>
-                    <th scope="row"><?php echo $index + 1; ?></th>
-                    <td><?php echo $hotel['name']; ?></td>
-                    <td><?php echo $hotel['vote']; ?></td>
-                    <td><?php echo $hotel['description']; ?></td>
+            <!-- DEFAULT TABLE -->
+            <?php
+            if (!isset($_GET['want-park']) || $want_park === "") {
+                foreach ($hotels as $index => $hotel) { ?>
+                    <tr>
+                        <th scope="row"><?php echo $index + 1; ?></th>
+                        <td><?php echo $hotel['name']; ?></td>
+                        <td><?php echo $hotel['vote']; ?></td>
+                        <td><?php echo $hotel['description']; ?></td>
 
-                    <!-- parking -->
-                    <td><?php if ($hotel['parking']) {
-                            echo "Si";
-                        } else {
-                            echo "No";
-                        }; ?></td>
-                    <!-- /parking -->
+                        <!-- parking -->
+                        <td><?php if ($hotel['parking']) {
+                                echo "Si";
+                            } else {
+                                echo "No";
+                            }; ?></td>
+                        <!-- /parking -->
 
-                    <td><?php echo $hotel['distance_to_center']; ?> Km</td>
-                </tr>
-            <?php }; ?>
+                        <td><?php echo $hotel['distance_to_center']; ?> Km</td>
+                    </tr>
+                <?php }
+            } else { ?>
+                <!-- /DEFAULT TABLE -->
+
+                <!-- PARKING FILTRED TABLE -->
+                <?php
+                foreach ($hotels as $index => $hotel) {
+                    if ($hotel['parking']) { ?>
+                        <tr>
+                            <th scope="row"><?php echo $index + 1; ?></th>
+                            <td><?php echo $hotel['name']; ?></td>
+                            <td><?php echo $hotel['vote']; ?></td>
+                            <td><?php echo $hotel['description']; ?></td>
+
+                            <!-- parking -->
+                            <td><?php if ($hotel['parking']) {
+                                    echo "Si";
+                                } else {
+                                    echo "No";
+                                }; ?></td>
+                            <!-- /parking -->
+
+                            <td><?php echo $hotel['distance_to_center']; ?> Km</td>
+                        </tr>
+            <?php }
+                }
+            } ?>
+            <!-- /PARKING FILTRED TABLE -->
+
         </tbody>
+        <!-- /body -->
     </table>
+    <!-- /DATA TABLE -->
+
 </body>
 
 </html>
