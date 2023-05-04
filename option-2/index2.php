@@ -41,9 +41,6 @@ $hotels = [
 
 ];
 
-$my_hotels_array = $hotels;
-$want_park = false;
-
 // GET REQUEST
 if (isset($_GET['want-park'])) {
     $want_park = $_GET['want-park'];
@@ -129,7 +126,6 @@ if (isset($hotel_vote)) {
 
         <!-- body -->
         <tbody>
-            <!-- DEFAULT TABLE -->
             <?php
             foreach ($my_hotels_array as $index => $hotel) { ?>
                 <tr>
@@ -149,7 +145,6 @@ if (isset($hotel_vote)) {
                     <td><?php echo $hotel['distance_to_center']; ?> Km</td>
                 </tr>
             <?php } ?>
-            <!-- /VOTE FILTRED TABLE -->
 
         </tbody>
         <!-- /body -->
