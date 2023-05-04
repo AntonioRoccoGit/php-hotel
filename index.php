@@ -67,11 +67,14 @@ if (isset($_GET['want-park'])) {
 <body>
 
     <form class="mt-3 p-2" action="index.php" method="GET">
+        <!-- PARK SELECT -->
         <label for="want-park">Parcheggio</label>
         <select class="p-1" name="want-park" id="want-park">
             <option value="">Scegli..</option>
             <option value="true">Si</option>
         </select>
+        <!-- /PARK SELECT -->
+        <!-- VOTE SELECT -->
         <label for="hotel-vote">Media Voti</label>
         <select class="p-1" name="hotel-vote" id="hotel-vote">
             <option value="">Scegli..</option>
@@ -79,6 +82,7 @@ if (isset($_GET['want-park'])) {
                 <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
             <?php } ?>
         </select>
+        <!-- /VOTE SELECT -->
         <button class="btn btn-success" type="submit">Filtra</button>
         <button class="btn btn-danger" type="reset">Elimina</button>
 
@@ -101,7 +105,7 @@ if (isset($_GET['want-park'])) {
         <tbody>
             <!-- DEFAULT TABLE -->
             <?php
-            if (!isset($_GET['want-park']) || $want_park === "" && $hotel['vote'] >= $hotel_vote) {
+            if ((!isset($_GET['want-park']) || $want_park === "") && (!isset($_GET['hotel-vote']) || $hotel_vote === "")) {
                 foreach ($hotels as $index => $hotel) { ?>
                     <tr>
                         <th scope="row"><?php echo $index + 1; ?></th>
@@ -120,13 +124,13 @@ if (isset($_GET['want-park'])) {
                         <td><?php echo $hotel['distance_to_center']; ?> Km</td>
                     </tr>
                 <?php }
-            } else { ?>
+            } else if (isset($_GET['want-park']) && $want_park != "") { ?>
                 <!-- /DEFAULT TABLE -->
 
                 <!-- PARKING FILTRED TABLE -->
                 <?php
                 foreach ($hotels as $index => $hotel) {
-                    if ($hotel['parking'] && $hotel['vote'] >= $hotel_vote) { ?>
+                    if ($hotel['parking'] === true && $hotel['vote'] >= $hotel_vote) { ?>
                         <tr>
                             <th scope="row"><?php echo $index + 1; ?></th>
                             <td><?php echo $hotel['name']; ?></td>
@@ -143,10 +147,38 @@ if (isset($_GET['want-park'])) {
 
                             <td><?php echo $hotel['distance_to_center']; ?> Km</td>
                         </tr>
-            <?php }
+                <?php }
                 }
-            } ?>
-            <!-- /PARKING FILTRED TABLE -->
+            } else { ?>
+                <!-- /PARKING FILTRED TABLE -->
+
+                <!-- VOTE FILTRED TABLE -->
+                <?php
+                foreach ($hotels as $index => $hotel) {
+                    if ($hotel['vote'] >= $hotel_vote) { ?>
+                        <tr>
+                            <th scope="row"><?php echo $index + 1; ?></th>
+
+                            <td><?php echo $hotel['name']; ?></td>
+                            <td><?php echo $hotel['vote']; ?></td>
+                            <td><?php echo $hotel['description']; ?></td>
+
+                            <!-- parking -->
+                            <td><?php if ($hotel['parking']) {
+                                    echo "Si";
+                                } else {
+                                    echo "No";
+                                }; ?></td>
+                            <!-- /parking -->
+
+                            <td><?php echo $hotel['distance_to_center']; ?> Km</td>
+                        </tr>
+                <?php }
+                }
+                ?>
+
+            <?php } ?>
+            <!-- /VOTE FILTRED TABLE -->
 
         </tbody>
         <!-- /body -->
